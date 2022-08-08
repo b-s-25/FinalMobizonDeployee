@@ -1,0 +1,98 @@
+﻿@model DomainLayer.Registration
+
+@{
+    ViewData["Title"] = "My Profile";
+    var data = ViewData["MyProfile"] as DomainLayer.Registration;
+    var address = ViewData["UserAddress"] as IEnumerable<DomainLayer.Address>;
+    var returnUrl = ViewBag.ProfileUrl as string;
+}
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
+</head>
+
+<div>
+    <div class="card" style="padding: 15px; margin-bottom: 25px;">
+        <p style=" font-size: 20px; margin-left: 35px;">My Account</p>
+        <p class="text" style="font-size: 30px; width: 220%; margin-left: 650px; "> @data.firstName @data.lastName</p>
+        <p class="text" style="font-size: 20px; width: 220%; margin-left: 603px;">@data.email</p>
+        <div class="address"><p class="card-title" style="font-size: large; margin-left: 200px; ">My Addresses</p></div>
+        @if (address == null || address.Count() == 0)
+        {
+            <div class="row" style="padding: 2px; margin-left: -37px;">
+                <div class="col"><a href="/checkout/address?returnUrl=@returnUrl" class="btn btn-primary" style="margin-left: 50px;">Add New Address</a></div>
+            </div>
+        }
+        else
+        {
+            @foreach (var userAddress in address)
+            {
+                <div id="address">
+                    <div class="address">
+                        <label class="form-check-label" style="margin-left: 270px;">@userAddress.name <br />@userAddress.address<br />@userAddress.district<br />@userAddress.state<br />@userAddress.country<br />@userAddress.pincode<br />@userAddress.phoneNumber</label>
+                        <i class="bi bi-pencil-fill"></i>
+                        <a href="/checkout/UpdateAddress?returnUrl=@returnUrl&id=@userAddress.id" class="btn btn-primary">Edit</a>
+                        <a class="btn btn-primary" onclick="deleteFunction(@userAddress.id);" style="color:white;" >Delete</a>                    
+                    </div>
+                </div>
+                <br />
+            }
+            <div class="row" style="padding: 2px; margin-left: -37px;">
+                <div class="col">
+                    <a href="/checkout/address?returnUrl=@returnUrl" class="btn btn-primary" style=" margin-left: 285px;"><span class="glyphicon glyphicon-plus"></span>Add New Address</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="modal " id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center" style="background-color: #236ca7;">
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+
+                <i class="fas fa-times fa-4x animated rotateIn"></i>
+
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer flex-center" style="background-color: #236ca7;">
+
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
+<script>
+    function deleteFunction(data) {
+        var id = data;
+        $(document).ready(function (e) {
+            $.ajax({
+                url: '/checkout/DeleteAddress/' + id,
+                type: 'get',
+                success: function (response) {
+                    $("#modalConfirmDelete").find(".modal-body").html(response);
+                    $("#modalConfirmDelete").modal('show');
+                },
+                failure: function (response) {
+                    alert("fail");
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            })
+        });
+    }
+</script>

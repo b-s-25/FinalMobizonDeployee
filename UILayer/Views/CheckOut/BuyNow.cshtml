@@ -1,0 +1,147 @@
+﻿@model DomainLayer.UserCheckOut
+
+@{
+    ViewData["Title"] = "Checkout";
+    var user = ViewData["User"] as DomainLayer.Registration;
+    var userAddress = ViewData["UserAddress"] as IEnumerable<DomainLayer.Address>;
+    var products = ViewData["Products"] as DomainLayer.Product.ProductsModel;
+    var paymentMode = Enum.GetValues(typeof(DomainLayer.Orders.PaymentStatus));
+    var returnUrl = ViewBag.BuyNowUrl as string;
+    Layout = "~/Views/User/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<form class="order" method="post" asp-action="BuyNow" style="margin-left: 120px; margin-right: 120px;">
+    <input asp-for="productId" type="hidden" value="@products.id" />
+    <input asp-for="userId" type="hidden" value="@user.registrationId" />
+
+    <div class="card" style="padding: 15px; margin-bottom: 25px;">
+        <div class="address"><p class="card-title" style="text-align: center; font-size: large;"><b>Delivery Address</b></p></div>
+        @if (userAddress == null || userAddress.Count() == 0)
+        {
+            <p> Please add address</p>
+            <div class="row" style="padding: 2px; margin-left: -37px;">
+                <div class="col"><a href="/checkout/address?returnUrl=@returnUrl" class="btn btn-primary" style="margin-left: 50px;">Add New Address</a></div>
+            </div>
+        }
+        else
+        {
+            <p style="color: red;">*Please select an address</p>
+            @foreach (var address in userAddress)
+            {
+                <div id="address">
+                    <div class="address">
+                        <input class="form-check-input" id="checkboxId" onchange="checkbox()" type="checkbox" name="addressId" value="@address.id" style="margin-left:6px" />
+                        <label class="form-check-label" style="margin-left: 30px;">@address.name <br />@address.address<br />@address.district</label>
+                    </div>
+                </div>
+            }
+            <div class="row" style="padding: 2px; margin-left: -37px;">
+                <div class="col"><a href="/checkout/address?returnUrl=@returnUrl" class="btn btn-primary" style="margin-left: 50px;"><span class="glyphicon glyphicon-plus"></span>Add New Address</a></div>
+            </div>
+            <div class="row" style="padding: 2px; margin-left: -37px;">
+                <div class="col"><a class="btn btn-primary" id="addressContinue" style="margin-left: 50px; color:white; display:none">Continue</a></div>
+            </div>
+        }
+    </div>
+    <div class="card" id="orderSummary" style="margin-bottom: 26px; display:none;">
+        <div class="summary"><p class="card-title" style="text-align: center; font-size: large; margin-top: 20px; margin-right: -1px; "><b>Order Summary</b></p></div>
+        <div class="orderDetails">
+            <div class="form-check">
+                <div class="">
+                    <div class="col-12">
+                        <img class="img-fluid" src="~/images/ProductImages/@products.image" style="padding: 15px; width: 10%;" />
+                        <label class="form-check-label" for="flexCheckDefault">
+                            @products.productName (@products.specification.productRam GB RAM, @products.specification.productStorage GB)<br>&#8377 @products.productPrice
+                            <div >Quantity:<input name="quantity" asp-for="@products.quantity" type="number" min="1" max="@products.quantity" style="width:50px; height:20px;" value="1" id="QuantityId" onchange="myFunction(@products.productPrice)" /></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding: 2px; margin-left: 10px;">
+            <div class="col"><a class="btn btn-primary" id="summaryContinue" style=" margin-left: 24px; color: white; margin-bottom: 15px;">Continue</a></div>
+        </div>
+    </div>
+
+    <div class="card payment mt-3" id="paymentMode" style="margin-bottom: 26px; padding: 26px; display: none;">
+        <h5 class="card-title address" style="text-align: center; font-size: large"><b>Payment Mode</b></h5>
+        <p style="color: red;">*Please select Payment Mode</p>
+        @foreach (var items in paymentMode)
+        {
+
+            <div class="form-check">
+                <input class="form-check-input" onchange="paymentMode()" name="paymentModeId" type="checkbox" value='@Convert.ToInt32(items)' style="margin-left: -18px; ">
+                <label class="form-check-label" for="flexCheckDefault" style=" margin-left: 10px;">
+                    @items
+                </label>
+            </div><br />
+            <div class="row" style="padding: 2px; margin-left: -37px;">
+                <div class="col"><a class="btn btn-primary" id="paymentContinue" style="margin-left: 50px; color:white; display:none;">Continue</a></div>
+            </div>
+        }
+        <p class="card-text"></p>
+    </div>
+
+
+
+    <div class="card" id="priceId" style="display: none; margin-right: 119px; width:100%;">
+
+        <div class="Price">
+            <h5 class="card-title" style="text-align: center; font-size: large; margin-top: 25px; margin-right: 20px; "><b>Price Details</b></h5>
+        </div>
+        <div>
+            <p class="card-text" id="priceField" style="margin-left: 55px;"><b>Price for each product : Rs. @products.productPrice</b></p>
+            <div class="card-text" style="margin-left: 53px; "> <div class="row"><p class="col-6"><b>Shipping Charge : </b><p class="col-6" style="color: green; color: green; position: relative; right: 530px;"><b>Free</b></p>  </div></div>
+            <div id="price"></div>
+        </div>
+
+        <div class="">
+            <p class="card-text" id="totalPrice" style="margin-left: 53px;"><b>Total Payable : Rs. @products.productPrice</b></p>
+            <div id="price"></div>
+        </div>
+        <div class="row" style="margin-bottom: 25px;">
+            <div class="col"><a asp-controller="user" asp-action="Index" class="btn btn-primary" style="position: relative; left: 200px;">Cancel</a></div>
+            <div class="col"></div>
+            <div class="col col d-flex justify-content-end "><input type="submit" value="Place Order" class="btn btn-primary" style=" position: relative; right: 1185px;" /></div>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $("#addressContinue").click(function () {
+            $("#orderSummary").show();
+        });
+        $("#summaryContinue").click(function () {
+            $("#paymentMode").show();
+        });
+        $("#paymentContinue").click(function () {
+            $("#priceId").show();
+        });
+
+    });
+    function myFunction(data) {
+        console.log("a");
+        var x = document.getElementById("QuantityId").value;
+        var y = document.getElementById("priceField").value;
+        document.getElementById("totalPrice").innerHTML = "<p> Total Payable: Rs. " + x * data + "</p>";
+    }
+
+    function checkbox() {
+        console.log("b");
+        $("#addressContinue").toggle();
+    }
+    function paymentMode() {
+        console.log("c");
+        $("#paymentContinue").toggle();
+    }
+</script>
+

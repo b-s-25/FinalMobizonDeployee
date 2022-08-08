@@ -1,0 +1,87 @@
+﻿@model IEnumerable<DomainLayer.Product.ProductsModel>
+
+@{
+
+    var products = ViewData["Products"] as DomainLayer.Product.ProductsModel;
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/user/_Layout.cshtml";
+}
+<link rel="stylesheet" href="/css/Layout/master.css">
+
+
+<section class="content-section">
+
+    <div class="mz-container">
+
+
+        <div class="detail-container">
+
+            <h2><a href="#" class="prev-page">Latest Product</a><a href="#">@products.productName</a></h2>
+
+
+            <div class="detail-content">
+
+                <div class="item-figure">
+                    @if (((System.Security.Claims.ClaimsIdentity)User.Identity).HasClaim("role", "Admin"))
+                    {
+                        <img src="~/images/ProductImages/@products.image" />
+                    }
+                    else
+                    {
+
+                        <img src="~/images/ProductImages/@products.image" alt="">
+
+
+                    }
+                </div>
+
+                <div class="item-datails">
+
+                    <h3> @products.productName</h3>
+                    <ul>
+                        <li>
+                            <p><span>Ram</span><b>@products.specification.productRam</b></p>
+                        </li>
+                        <li>
+                            <p><span>Storage</span><b>@products.specification.productStorage</b></p>
+                        </li>
+                        <li>
+                            <p><span>Sim Type</span><b>@products.specification.productSim</b></p>
+                        </li>
+                        <li>
+                            <p><span>Color</span><b>@products.specification.productColor</b></p>
+                        </li>
+                        <li>
+                            <p><span>Processor</span><b>@products.specification.productProcessor</b></p>
+                        </li>
+                        <li>
+                            <p>
+                                <span>Description</span><b>
+                                    @products.description
+
+                                </b>
+                            </p>
+                        </li>
+
+                    </ul>
+                    <h2><span>₹</span>@products.productPrice</h2>
+                    <div class="action-content">
+                        <a asp-route-id="@products.id" asp-controller="checkout" asp-action="BuyNow">
+                            <button type="submit" class="mz-btn-primary buy-now">
+                                Buy Now
+                            </button>
+                        </a>
+                        <a asp-route-id="@products.id" asp-controller="user" asp-action="addtocart">
+                            <button type="submit" class="mz-btn-primary with-icon add-cart">
+                                + <span class="material-icons">&#xe8cc;</span>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</section>

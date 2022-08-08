@@ -1,0 +1,371 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - UILayer</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default">
+
+        <div class="container">
+            <div class="navbar-header" style=" margin-left: -133px;">
+                <a class="navbar-brand" href="/user/index">
+                    <img src="/images/Logo/MobiZone-Logo-Full@2x.png" alt="..." height="36" style=" margin-right: 1273px; margin-top: -8px;">
+                </a>
+                <a href="/user/index" class="navbar-brand">MobiZone</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-nav-demo">
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li style="margin-top: -39px;">
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="account">@User.Identity.Name </a>
+                        </li>
+                    }
+                    else
+                    {
+
+                        <li style=" margin-left: -100px; margin-top: 0px;"><a asp-area="" asp-controller="User">Sign Up</a></li>
+                        <li style=" margin-top: -49px; "><a asp-area="" asp-controller="User" asp-action="Login">Login</a></li>
+                    }
+
+                </ul>
+            </div>
+
+    </nav>
+    <nav class="navbar navbar-default" id="second" style="border-bottom: 1px solid #e7e7e7;" ">
+
+
+        <ul class="nav navbar-nav" style="display:flex; flex-direction:row;">
+
+            <li id="selectitem">
+                <div class="row">
+                    <form asp-controller="UserProductHome" class="form-inline" asp-action="filter" method="post">
+                        <select id="drpEmpList" name="brandName" class="form-control col-6" style="width:216px; margin-top:9px; ">
+                            <option value="0">--Select--</option>
+                            <option value="samsung">samsung</option>
+                            <option value="vivo">vivo</option>
+
+                        </select>
+
+                        <input type="submit" value="Filter" style="margin-top: 8px;" />
+                    </form>
+                </div>
+
+            </li>
+            <li><a href="#">SortBy</a></li>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown" style="padding-right: 128px;">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        SortBy
+                    </a>
+
+                <li><a class="dropdown-item" href="#">High to low</a></li>
+                <li><a class="dropdown-item" href="#">Low to High</a></li>
+
+
+            </ul>
+            </li>
+        </ul>
+        <form class="navbar-form navbar-left">
+
+            <div class="form-group">
+
+                <input type="text" class="form-control" placeholder="Search" style=" width: 493px;">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+
+        </form>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <ul class="nav navbar-nav" style="display:flex; flex-direction:row;">
+
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown"
+                        style=" margin-left: 945px;">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Account
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/user/MyProfile">My Profile</a></li>
+                            <li><a class="dropdown-item" href="/user/MyOrder">MyOrder</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+                <li>
+                    <a href="/user/addtocart">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>Cart
+                    </a>
+                </li>
+
+            </ul>
+            <li class="nav-item">
+                <a href="/user/logout">Logout</a>
+            </li>
+        }
+        else
+        {
+            <li><a asp-area="" asp-controller="User" asp-action="UserRegister">Sign Up</a></li>
+            <li><a asp-area="" asp-controller="User" asp-action="Login">Login</a></li>
+        }
+        </ul>
+    </nav>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    @*<partial name="Users\_UserSideBar" />*@
+    <div>
+        @RenderBody()
+    </div>
+    <footer class="footer-distributed">
+
+        <div class="footer-left">
+            <div class="logo"><img src="~/images/Logo/MobiZone-Logo-Squre.png" style=" width: 80px; margin-top: -33px;" /></div>
+            <h3>Mobi<span>Zone</span></h3>
+
+            <p class="footer-links">
+                <a href="#" class="link-1">Home</a>
+                <a href="#">About</a>
+
+                <a href="#">Contact</a>
+                <a href="#">Privacy And Policy</a>
+
+
+            </p>
+
+            <p class="footer-company-name">MobiZone Online Shopping Pvt. Ltd.© 2022</p>
+        </div>
+
+        <div class="footer-center">
+
+            <div>
+                <i class="fa fa-map-marker"></i>
+                <p>
+                    <span>
+                        Kolar
+                    </span>    Karnataka
+                </p>
+            </div>
+
+            <div>
+                <i class="fa fa-phone"></i>
+                <p>+91-9987456320</p>
+            </div>
+
+            <div>
+                <i class="fa fa-envelope"></i>
+                <p><a href="mailto:admin@gamil.com">admin@gamil.com</a></p>
+            </div>
+
+        </div>
+
+        <div class="footer-right">
+
+            <p class="footer-company-about">
+                <span>About the company</span>
+                Mobizone is a new online E-commerece store-a continously evolving shopping centre online.Just like in any shopping centre, there is always something fresh and exciting.
+            </p>
+
+        </div>
+
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await Component.InvokeAsync("Notyf")
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+</body>
+</html>
+<style>
+    @*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,500,300,700);*@
+
+    *{
+      font-family: Open Sans;
+    }
+
+    .footer-distributed{
+        /background: #666;/
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+        box-sizing: border-box;
+        width: 100%;
+        text-align: left;
+        font: bold 16px sans-serif;
+        padding: 55px 50px;
+        border-top:1px solid black;
+    }
+
+    .footer-distributed .footer-left,
+    .footer-distributed .footer-center,
+    .footer-distributed .footer-right{
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    /* Footer left */
+
+    .footer-distributed .footer-left{
+        width: 40%;
+    }
+
+    /* The company logo */
+
+<<<<<<< HEAD
+    .footer-distributed h3{
+        /color:  #ffffff;/
+        font: normal 36px 'Open Sans', cursive;
+        margin: 0;
+    }
+=======
+        .footer-distributed h3 {
+            /*color:  #ffffff;*/
+            font: normal 36px 'Open Sans', cursive;
+            margin: 0;
+            text-transform: uppercase;
+        }
+>>>>>>> c97cb30672c430c71ce612bfb4e1a3b3cdb90406
+
+        .footer-distributed h3 span {
+            color: #42a9c1;
+        }
+
+    /* Footer links */
+
+    .footer-distributed .footer-links{
+    /*    color:  #ffffff;*/
+        margin: 20px 0 12px;
+        padding: 0;
+    }
+
+    .footer-distributed .footer-links a{
+        display:inline-block;
+        line-height: 1.8;
+      font-weight:400;
+        text-decoration: none;
+        color:  inherit;
+    }
+
+    .footer-distributed .footer-company-name{
+        color:  #222;
+        font-size: 14px;
+        font-weight: normal;
+        margin: 0;
+    }
+
+    /* Footer Center */
+
+    .footer-distributed .footer-center{
+        width: 35%;
+    }
+
+    .footer-distributed .footer-center i{
+        background-color:  #33383b;
+        color: #ffffff;
+        font-size: 25px;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 42px;
+        margin: 10px 15px;
+        vertical-align: middle;
+    }
+    .footer-distributed .footer-center i.fa-envelope{
+        font-size: 17px;
+        line-height: 38px;
+    }
+
+    .footer-distributed .footer-center p{
+        display: inline-block;
+    /*    color: #ffffff;*/
+      font-weight:400;
+        vertical-align: middle;
+        margin:0;
+    }
+
+    .footer-distributed .footer-center p span{
+        display:block;
+        font-weight: normal;
+        font-size:14px;
+        line-height:2;
+    }
+
+    .footer-distributed .footer-center p a{
+        color:  lightseagreen;
+        text-decoration: none;;
+    }
+
+    .footer-distributed .footer-links a:before {
+      content: "|";
+      font-weight:300;
+      font-size: 20px;
+      left: 0;
+    /*  color: #fff;*/
+      display: inline-block;
+      padding-right: 5px;
+    }
+
+    .footer-distributed .footer-links .link-1:before {
+      content: none;
+    }
+
+    /* Footer Right */
+
+    .footer-distributed .footer-right{
+        width: 20%;
+    }
+
+    .footer-distributed .footer-company-about{
+        line-height: 20px;
+    /*    color:  #92999f;*/
+        font-size: 13px;
+        font-weight: normal;
+        margin: 0;
+    }
+
+    .footer-distributed .footer-company-about span{
+        display: block;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .footer-distributed .footer-icons{
+        margin-top: 25px;
+    }
+
+    .footer-distributed .footer-icons a{
+        display: inline-block;
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+        background-color:  #33383b;
+        border-radius: 2px;
+
+        font-size: 20px;
+    /*    color: #ffffff;*/
+        text-align: center;
+        line-height: 35px;
+
+        margin-right: 3px;
+        margin-bottom: 5px;
+    }
+
+
+</style>

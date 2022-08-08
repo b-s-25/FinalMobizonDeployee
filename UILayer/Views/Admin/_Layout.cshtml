@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="/css/Layout/master.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ 
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-3.4.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    
+    <header class="admin-haeder">
+        <div class="mz-container-full">
+
+            <nav class="primary-header">
+                <a href="/admin/index"  <h2 class="logo">
+                  <img src="/images/Logo/MobiZone-Logo-Squre.png" alt="">
+                    MobiZone
+                </h2>
+                </a>
+                <a href="http://" class="menu-open"><span class="material-icons">&#xe5d2;</span></a>
+                <div class="seconday-nav">
+
+                    <ul>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a href="#" class="my-account"><span class="material-icons">&#xe7fd;</span>@User.Identity.Name</a></li>
+                            <li class="logout"><a href="/user/logout" class="login"><span class="material-icons">&#xe9ba;</span>Logout</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="#" class="login"><span class="material-icons">&#xe897;</span>Login</a></li>
+                        }
+
+
+                    </ul>
+
+
+                </div>
+
+            </nav>
+        </div>
+
+    </header>
+    <section class="content-section admin-dashboard">
+
+        <div class="mz-container-full">
+
+            <div class="admin-main-container">
+                <div class="sidebar">
+                    <partial name="Admin\_AdminSidebar" />
+                </div>
+                <div class="admin-content">
+                    <div class="title">
+                        <h2><a href="#" class="prev-page">Admin Dashboard</a></h2>
+                        @RenderBody()
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    @*<partial name="Admin\_AdminSidebar" />*@
+    @*<partial name="Admin\_footer" />*@
+    @*<script src="~/js/site.js" asp-append-version="true"></script>*@
+    @await Component.InvokeAsync("Notyf")
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+<script>
+    $.fn.menuOpen = function() {
+        $(this).on('click', function(e) {
+       /*     e.preventDefault();*/
+            console.log('Hit');
+            $(document).find('.admin-main-container').toggleClass('menu-open');
+            if ($('.admin-main-container').hasClass('menu-open')) {
+                $(document).find('.admin-main-container .sidebar').removeClass('slideOutRight').addClass('slideOutLeft');
+                $(document).find('.admin-main-container .admin-content').removeClass('slideInMarginLeft').addClass('slideOutMarginLeft');
+            } else {
+
+                $(document).find('.admin-main-container .sidebar').removeClass('slideOutLeft').addClass('slideOutRight');
+                $(document).find('.admin-main-container .admin-content').removeClass('slideOutMarginLeft').addClass('slideInMarginLeft');
+            }
+        })
+    }
+    $(document).ready(function() {
+        $('.menu-open').menuOpen();
+        $(document).on('click','#nav li > a',function(e) {
+          /*  e.preventDefault();*/
+            
+            $(e.target).next().slideToggle();
+            
+        });
+    })
+</script>
+</html>
+

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<DomainLayer.Product.ProductsModel>
+@{
+    ViewData["Title"] = "Index";
+}
+<link rel="stylesheet" href="/css/Layout/scss/master.css">
+<div class="content-section ">
+<div class="mz-container">
+    <div class="mz-row">
+         <div class="list-container">
+        @foreach (var items in Model)
+        {
+            
+               
+             <div class="list-content" style="width:330px">
+                 @if (items.image != null)
+                 {
+                     <a asp-route-id="@items.id" asp-controller="Product" asp-action="ProductDetails"><img src="~/images/ProductImages/@items.image" alt="Mobile"></a>
+                 }
+                 else
+                 {
+                     <a asp-controller="Product" asp-action="ProductDetails"><img src="~/images/No Images found.jpg" alt="Mobile"></a>
+                 }
+
+                 <h3>@items.productName</h3>
+                 <h2><span>₹</span>@items.productPrice</h2>
+                 <div class="action-content">
+                     <a asp-route-id="@items.id" asp-controller="checkout" asp-action="BuyNow">
+                         <button type="submit" class="mz-btn-primary with-icon buy-now">
+                             Buy Now
+                         </button>
+                     </a>
+                     <a asp-route-id="@items.id" asp-controller="User" asp-action="AddtoCart">
+                         <button type="submit" class="mz-btn-primary with-icon add-cart">
+                             + <span class="material-icons">&#xe8cc;</span>
+                         </button>
+                     </a>
+                 </div>
+             </div>
+               
+               
+                }
+                 </div>
+            </div>
+        </div>
+
+</div>

@@ -1,0 +1,171 @@
+﻿@model DomainLayer.Registration
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "~/Views/User/WithoutNav.cshtml";
+    ViewData["Title"] = "UserRegister";
+
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+<script>
+    function SignIn() {
+
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script type="text/javascript">
+    $(() => {
+        $(document).ready(function () {
+            $("#submit").click(function (event) {
+                event.preventDefault();
+                var data = $("#RegistrationForm").serialize()
+                console.log(data);
+                //alert(data);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/User/UserRegister',
+
+                    data: data,
+                    success: function () {
+                        alert('Successfully Registered ');
+                        document.getElementById('RegistrationForm').reset();
+
+                    },
+                    error: function () {
+                        alert('Registration Failed');
+                        console.log('Failed ');
+                    }
+                });
+            });
+        });
+    });
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<head>
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,400&display=swap');
+
+        *, ::after, ::before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .simple-form {
+            min-width: 350px;
+            position: absolute;
+            left: 50%;
+            top: 35%;
+            transform: translate(-50%, -50%);
+        }
+
+        .simple-form-content {
+        /*    background-color: #252525;*/
+            border-radius: 10px;
+            padding: 2rem;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .animate-border {
+            position: absolute;
+            z-index: -1;
+           /* width: calc(100% + 6px);*/
+            height: calc(100% + 6px);
+            border-radius: 10px;
+            overflow: hidden;
+            top: -3px;
+            left: -3px;
+            z-index: -111;
+        }
+
+            .animate-border::before {
+                content: "";
+                position: absolute;
+                left: -50%;
+                top: -50%;
+                width: 200%;
+                height: 200%;
+                background-repeat: no-repeat;
+                background-size: 50% 50%;
+                background-position: top left;
+                background-image: linear-gradient(to right, transparent 10%, rgb(57 153 83 / 5%) 10%, rgb(57 153 83 / 15%) 20%,rgb(57 153 83 / 20%), #42a9c1);
+                animation: animate-border 3s linear infinite;
+            }
+
+        @@keyframes animate-border {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<section class="simple-form " style="width: 22%;">
+
+    <div class="animate-border"></div>
+    <div class="simple-form-content">
+        <h3 class="text-center" style="color:#ffc107;">Registration</h3>
+
+        <form id="RegistrationForm" method="post" asp-action="UserRegister">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input class="form-control" type="text" asp-for="firstName" id="logEmail" placeholder="First Name" />
+                    <span asp-validation-for="firstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input class="form-control" type="text" asp-for="lastName" id="logEmail" placeholder="Last Name" />
+                    <span asp-validation-for="lastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                    <input class="form-control" type="email" asp-for="email" id="logEmail" placeholder="Email" />
+                    <span asp-validation-for="email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input class="form-control" type="password" asp-for="password" id="logPassword" placeholder="Password" />
+                    <span asp-validation-for="password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input class="form-control" type="password" asp-for="confirmPassword" id="logEmail" placeholder="Confirm Password" />
+                    <span asp-validation-for="confirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input class="btn btn-info form-control" style="background-color: #0a8199" type="submit" value="Register" />
+                </div>
+                <div class="col">
+                    <a style="padding: 15px; cursor: pointer; color: #337ab7; position: relative; top: 10px;" onclick="SignIn()" asp-action="Login">Already a User? Click here to Login  </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await Component.InvokeAsync("Notyf")
+
+

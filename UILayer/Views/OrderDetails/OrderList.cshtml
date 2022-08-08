@@ -1,0 +1,150 @@
+﻿@model IEnumerable<DomainLayer.UserCheckOut>
+
+@{
+    ViewData["Title"] = "OrderList";
+    //columns.Add().Field(e => e.orderstatus).Template("#: displayEnum(data)#");
+    Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+@*<script src="https://www.solodev.com/assets/pagination/jquery.twbsPagination.js"></script>*@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js" defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+@*<script src="paging.js"></script>*@
+
+<table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Order Id</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    $(document).ready(function () {
+        var status;
+        var dataStatus;
+        var obj;
+        const dataList = [];
+        const Roles = [];
+        const statusList = [1, 2, 3, 4];
+        var getLink;
+        var header;
+        getStatus(getOrderList);
+        
+        function getStatus(callback) {
+            $.ajax({
+                url: 'OrderStatus',
+                type: 'get',
+                datatype: 'json',
+                success: function (data) {
+                    status = data;
+                    console.log(status);
+                    callback();
+                    obj = JSON.parse(status);
+                    for (name in obj) {
+                        dataList.push(name)
+                    }
+                }
+            })
+        }
+
+        function getOrderList() {
+            $.ajax({
+
+                url: 'https://mobizoneappapi.azurewebsites.net//api/Orderdetails/Orderdetails',
+
+               @* url: _url + 'api/Orderdetails/Orderdetails',*@
+
+                type: 'get',
+                datatype: 'json',
+                success: function (data) {
+                    var c = 0;
+                    console.log(data.data[0]);
+                    var tableData = data.data;
+                    $('#datatable').dataTable({
+                        data: tableData,
+                        columns: [
+                            { 'render': function () { ++c; return c; } },
+                            { 'render': function (data, type, full, meta) { return '<a href="/OrderDetails/orderDetails/' + full.orderId + '">' + full.orderId + '</a>'; } },
+                            @*{ 'render': function (data, type, full, meta) { if (full.cancelRequested == null) { return ''; } else { return Roles[full.cancelRequested - 1] } } },*@
+                            {
+                                "render": function (data, type, full, meta) {
+                                    dataStatus = full.status;
+                                    var sliceData = dataList.slice(dataStatus)
+                                    var sliceStatus = statusList.slice(dataStatus)
+                                    var formData = '<form id="orderStatus" action="/orderdetails/OrderUpdate" method="post"><input name="orderId" type="hidden" value="' + full.orderId + '"/><select id="enumDropdown" name="status" style="width: 39%;"><option value="' + dataList[full.status - 1] + '">' + dataList[full.status - 1] + '</option>';
+                                    var endData = '</select><input style="padding: 6px;margin-left: 23px;font-variant: all-small-caps;" type="submit" value="update" class="btn btn-orange"/></form>'
+                                    sliceData.forEach(function (element) {
+                                        var option = '<option value="' + element + '">' + element + '</option>';
+                                        formData = formData + option;
+                                    });
+                                    formData = formData + endData;
+                                    return formData;
+                                }
+                            }
+                        ]
+                    })
+                    var $select = $('#enumDropdown');
+                }
+            })
+        }
+       @* $.ajax({
+            url: 'RoleType',
+            type: 'get',
+            datatype: 'json',
+            success: function (data) {
+                status = data;
+                console.log(status);
+                obj = JSON.parse(status);
+                for (name in obj) {
+                    Roles.push(name)
+                }
+            }
+        })*@
+
+    })
+    function submitform() {
+        document.getElementById("order_form").submit();
+    }
+    $(document).ready(function () {
+    })
+    function orderSubmit() {
+        $("#orderStatus").submit(function (e) {
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+            var form = $(this);
+            var actionUrl = form.attr('/orderdetails/OrderUpdate');
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(),
+                success: function (data) {
+                    alert(data);
+                },
+                error: function (data) {
+                    alert(data)
+                }
+            });
+        });
+    }
+</script>
+
+<script>
+    var collection = @Html.Raw(Json.Serialize(ViewData["enumList"]));
+    function displayEnum(dataItem) {
+        return collection[dataItem.OrderStatus];
+    }
+</script>

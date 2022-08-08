@@ -1,0 +1,16 @@
+﻿@model DomainLayer.Product.ProductsModel
+
+@{
+    ViewData["Title"] = "Delete Product";
+}
+
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    
+    <form asp-action="DeleteProduct">
+        <input type="submit" value="Yes" class="btn btn-danger"style="color: #fff; background-color: #007bff; border-color: #007bff;" /> |
+        <a asp-action="Index">No</a>
+    </form>
+</div>

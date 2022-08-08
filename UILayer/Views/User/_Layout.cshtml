@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - UILayer</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @*<link rel="stylesheet" href="~/css/nav_styles/nav.css" />*@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    @Html.AntiForgeryToken()
+    <script src="~/js/nav.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/Layout/master.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-3.3.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="mz-container-full border-bottom">
+        <div class="seconday-nav">
+            <ul>
+                <li><a href="#" class="call-cc"><span class="material-icons">&#xe311;</span>+91 1800 000 765</a></li>
+                <li>
+                    <a href="#" class="mail-cc"><span class="material-icons">&#xe158;</span>support@mobizone.com</a>
+                </li>
+            </ul>
+            <ul>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a asp-controller="User" asp-action="MyProfile" class="my-account"><span class="material-icons">&#xe7fd;</span> @User.Identity.Name</a></li>
+                    @* <li><a href="/user/MyProfile" class="my-account"><span class="material-icons">&#xe7fd;</span>My Account</a></li>*@
+                    <li><a asp-controller="User" asp-action="MyOrders" class="my-account"><span class="material-icons">&#xe7fd;</span>My Orders</a></li>
+                    <li class="logout"><a asp-controller="User" asp-action="Logout" class="login"><span class="material-icons">&#xe9ba;</span>Logout</a></li>
+                }
+                else
+                {
+                    <li><a href="/User/Login" @*asp-controller="User" asp-action="Login""*@ class="login"><span class="material-icons">&#xe897;</span>Login</a></li>
+                }
+
+
+            </ul>
+
+
+        </div>
+    </div>
+    <header>
+        <div class="mz-container">
+
+            <nav class="primary-header">
+                <a href="/user/index">
+                    <h2 class="logo">
+
+                        <img src="/images//Logo/MobiZone-Logo-Squre.png" alt="">
+                        MobiZone
+
+
+                    </h2>
+                </a>
+                <div class="search-container">
+                    <form method="post" asp-action="SearchProduct">
+                        <div class="search-group">
+                            <input required type="text" name="name" class="form-type-text" id="searchid">
+                            <button type="submit" class="mz-btn-primary with-icon">
+                                <span class="material-icons">&#xe8b6;</span>Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="cart-content">
+
+
+                    <div class="dropdown">
+                        <a href="/user/addtocart" class="mz-btn-primary" id="badge">
+                            <span class="material-icons">&#xe8cc;</span>
+                        </a>
+
+
+
+
+
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+    </header>
+
+    <section class="content-section">
+        <div class="filter-content">
+            <div class="mz-container">
+
+
+                <form action="filter" method="post">
+                    <div class="brand-group">
+                        <select id="drpEmpList" name="brandName" class="form-type-select">
+                            <option value="0">-- Select Brand --</option>
+
+                            <option value="SAMSUNG">Samsung </option>
+                            <option value="Redmi">Redmi</option>
+                            <option value="POCO">Poco</option>
+                            <option value="OnePlus">OnePlus</option>
+                            <option value="APPLE">iPhone</option>
+                            <option value="APPLE">Apple </option>
+                            <option value="Amoled">Amoled </option>
+                        </select>
+                        <button type="submit" class="mz-btn-primary with-icon">
+                            <span class="material-icons">&#xef4f;</span>Filter
+                        </button>
+                    </div>
+                </form>
+
+
+                <div class="sort-price">
+                    <div class="dropdown">
+                        <button class="dropdown-toggle mz-btn-primary" type="button" id="dropdownMenu1"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="material-icons">&#xeaf7;</span> Sort By Price
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="/user/SortByDescending">High to Low</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/user/SortByAsc">Low to High</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        @RenderBody()
+    </section>
+
+    @*
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+
+    @*<script src="http://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>*@
+
+    @*<partial name="Users\_UserSideBar" />*@
+
+    @*<partial name="Admin\_footer" />*@
+    <footer>
+        <div class="mz-container">
+
+            <div class="quicklinks">
+                <div class="bottom-logo">
+                    <img src="images/MobiZone-Logo-Squre.png" alt="">
+                    <h2>MobiZone</h2>
+                </div>
+                <div class="footer-links">
+                    <a asp-controller="user" asp-action="Index" class="link-1">Home</a>
+                    <a asp-controller="Settings" asp-action="About">About</a>
+                    <a asp-controller="Settings" asp-action="Contact">Contact</a>
+                    <a asp-controller="Settings" asp-action="PrivacyAndPolicy">Privacy And Policy</a>
+                </div>
+                <p class="footer-company-name">MobiZone Online Shopping Pvt. Ltd.© 2022</p>
+            </div>
+            <div class="contact-details">
+                <div class="mz-details location">
+                    <span class="material-icons">&#xe0c8;</span>
+                    <p>
+                        <b>Kolar</b><br>
+                        Infopark Campus<br>
+                        Cochin, Kerala
+                    </p>
+                </div>
+                <div class="mz-details">
+                    <span class="material-icons">&#xe0b0;</span>
+                    <p>
+                        <b>+91-9987456320</b><br>
+
+                    </p>
+                </div>
+                <div class="mz-details">
+                    <span class="material-icons">&#xe0e6;</span>
+                    <p>
+                        <b>admin@mobizone.com</b><br>
+
+                    </p>
+                </div>
+            </div>
+            <div class="about-details">
+                <h3>
+                    About MobiZone
+                </h3>
+                <p>
+                    Mobizone is a new online E-commerece store-a continously evolving shopping centre online.Just like in any shopping centre, there is always something fresh and exciting.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await Component.InvokeAsync("Notyf")
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+

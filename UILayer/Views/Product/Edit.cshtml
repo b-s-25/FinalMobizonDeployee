@@ -1,0 +1,143 @@
+﻿
+@model DomainLayer.ProductView
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+<head>
+    <style>
+        .tab-content {
+            padding: 10px;
+            margin-left: 55px;
+        }
+        h1 {
+            color: #157fdb;
+            height: 60px;
+            text-align-last: center;
+            margin-bottom: 10px;
+            position: relative;
+            top: 20px;
+        }
+        .simple-form {
+            background-color: transparent;
+            width: 1000px;
+            height: 1195px;
+            margin-left: 250px;
+            border-radius: 25px;
+        }
+        .control-label {
+           @* color: white;*@
+            position: relative;
+            top: 35px;
+        }
+        .input
+        {
+            position: relative;
+            left: 100px;
+        }
+    </style>
+</head>
+<section class="simple-form ">
+    <h1>Edit Product</h1>
+    <div class="tab-content">
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+
+                    <input type="hidden" asp-for="id" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row" style="width: 600px;">
+                        <div class="form-group col-md-6">
+                            <label asp-for="productName" class="control-label" style=" margin-left: -4px;">Name : </label>
+                            <input asp-for="productName" class="form-control input" />
+                            <span asp-validation-for="productName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="productModel" class="control-label" style=" margin-left: 112px;">Model : </label>
+                            <input asp-for="productModel" class="form-control input" style="margin-left: 120px;"/>
+                            <span asp-validation-for="productModel" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row" style="width: 600px;">
+                        <div class="form-group col-md-6">
+                            <label asp-for="productPrice" class="control-label" style="margin-left: -6px;">Price : </label>
+                            <input asp-for="productPrice" class="form-control input" />
+                            <span asp-validation-for="productPrice" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="quantity" class="control-label" style="margin-left: 113px;">Quantity : </label>
+                            <input asp-for="quantity" class="form-control input" style="margin-left: 120px;"/>
+                            <span asp-validation-for="quantity" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row" style="width: 600px;">
+                        <div class="form-group col-md-6">
+                            <label asp-for="description" class="control-label" style=" margin-left: -8px;">Description : </label>
+                            <input asp-for="description" class="form-control input" />
+                            <span asp-validation-for="description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="col-md-10">
+                                <label asp-for="image" class="control-label" style="margin-left: 102px;">Image : </label>
+                                <a><input type="file" id="image" asp-for="image" multiple accept=".png ,.jpg, .jpeg" style="position: relative; left: 85px; margin-left: 120px;" /></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="width: 600px;">
+                        <div class="form-group col-md-6">
+                            <label asp-for="specification.productBrand" class="control-label" style="margin-left: -7px;">Brand : </label>
+                            <input asp-for="specification.productBrand" class="form-control input" />
+                            <span asp-validation-for="specification.productBrand" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="specification.productColor" class="control-label" style=" margin-left: 117px;">Color : </label>
+                            <input asp-for="specification.productColor" class="form-control input" style="margin-left: 120px;" />
+                            <span asp-validation-for="specification.productColor" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row" style="width: 600px;">
+                        <div class="form-group col-md-6">
+                            <label asp-for="specification.productRam" class="control-label" style="margin-left: -7px;">Ram : </label>
+                            <input asp-for="specification.productRam" class="form-control input" />
+                            <span asp-validation-for="specification.productRam" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="specification.productSim" class="control-label" style="margin-left: 120px;">Sim : </label>
+                            <input asp-for="specification.productSim" class="form-control input" style="margin-left: 120px;" />
+                            <span asp-validation-for="specification.productSim" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row" style="width: 600px;">
+                        <div class="form-group col-md-6">
+                            <label asp-for="specification.productStorage" class="control-label" style=" margin-left: -10px;"> Storage : </label>
+                            <input asp-for="specification.productStorage" class="form-control input" />
+                            <span asp-validation-for="specification.productStorage" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="specification.productProcessor" class="control-label" style="margin-left: 121px;">Processor : </label>
+                            <input asp-for="specification.productProcessor" class="form-control input" style="margin-left: 120px;" />
+                            <span asp-validation-for="specification.productProcessor" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Update" class="btn btn-primary" style="color: #fff; background-color: #007bff; border-color: #007bff; margin-left: 100px; " /><br />
+                        </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index" style=" margin-left: 100px;">Back to List</a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

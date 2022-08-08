@@ -1,0 +1,252 @@
+﻿@model DomainLayer.Login
+@{
+    ViewData["Title"] = "Login";
+}
+@{
+    Layout = "~/Views/User/WithoutNav.cshtml";
+    var error = TempData["error"] as string;
+    Microsoft.Extensions.Primitives.StringValues queryVal = "";
+    var returnUrl = ViewData["LoginUrl"] as string;
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+@{ if (User.Identity.IsAuthenticated)
+    {
+        <script type="text/javascript">
+            function noBack() { window.history.forward() }
+            noBack();
+            window.onload = noBack;
+            window.onpageshow = function (evt) { if (evt.persisted) noBack() }
+            window.onunload = function () { void (0) }
+        </script>
+    }
+}
+
+<head>
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,400&display=swap');
+
+        *, ::after, ::before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .simple-form {
+            min-width: 350px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .simple-form-content {
+          /*  background-color: #252525;*/
+            border-radius: 10px;
+            padding: 2rem;
+            width: 353px;
+            height: 325px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .simple-form .title {
+            color: #ffc107;;
+            text-transform: capitalize;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+            .simple-form .title span {
+                color: #42a9c1;
+            }
+
+        .simple-form .form > * {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .simple-form .form input {
+            background-color: transparent;
+            color: #fafafa;
+            padding: .5rem 0;
+            font-weight: bold;
+            width: 100%;
+            border: none;
+            outline: none;
+            border-bottom: 1px solid #fafafa;
+            text-indent: 2px;
+            caret-color: #42a9c1;
+        }
+
+            .simple-form .form input:focus {
+                border-color: #42a9c1;
+            }
+
+                .simple-form .form input:focus::placeholder {
+                    opacity: 0;
+                }
+
+            .simple-form .form input::placeholder {
+                text-transform: capitalize;
+                color: #a3a3a3;
+                font-weight: bold;
+                font-size: 12px;
+                transition: opacity .2s;
+            }
+
+        .simple-form .form label {
+            position: relative;
+        }
+
+        .simple-form .form .toggle-show {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+
+        .simple-form .form .toggle-show {
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        .simple-form .btn-submit {
+            text-transform: capitalize;
+            padding: .6rem 1.5rem;
+            border-radius: 4px;
+            color: #ffc107;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            background-color: #42a9c1;
+        }
+
+        /* Start Animate Border */
+        .animate-border {
+            position: absolute;
+            z-index: -1;
+           /* width: calc(100% + 6px);*/
+            height: calc(100% + 2px);
+            border-radius: 10px;
+            overflow: hidden;
+            top: -3px;
+            left: -3px;
+            z-index: -111;
+        }
+
+        .alert-danger {
+            color: #d70d20;
+            background-color: #f8d7da00;
+            border-color: #f5c6cb00;
+        }
+
+        .animate-border::before {
+            content: "";
+            position: absolute;
+            left: -50%;
+            top: -50%;
+            width: 200%;
+            height: 200%;
+            background-repeat: no-repeat;
+            background-size: 50% 50%;
+            background-position: top left;
+            background-image: linear-gradient(to right, transparent 10%, rgb(57 153 83 / 5%) 10%, rgb(57 153 83 / 15%) 20%,rgb(57 153 83 / 20%), #42a9c1);
+            animation: animate-border 3s linear infinite;
+        }
+
+        @@keyframes animate-border {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* End Animate Border */
+    </style>
+    <script>
+        let pwd = document.getElementById('pwd'),
+            toggleShowPwd = document.getElementById('hide-show'),
+            toggleIcon = document.getElementById('hide-show');
+
+        toggleShowPwd.onclick = () => {
+            if (pwd.type == "password") {
+                pwd.type = 'text';
+                toggleIcon.src = 'https://svgshare.com/i/dkj.svg'
+            } else {
+                pwd.type = 'password';
+                toggleIcon.src = 'https://svgshare.com/i/dnW.svg'
+            }
+        }
+    </script>
+</head>
+<section class="simple-form " style="height: 331px; margin-top: -100px; margin-left: -20px; width: fit-content;">
+    <div class="animate-border"></div>
+    <div class="simple-form-content">
+        @if (Context.Request.Query.TryGetValue("ReturnUrl", out queryVal) && queryVal.FirstOrDefault() == "/admin")
+        {
+            <h1 class="title">Admin<span>LogIn</span></h1> }
+        else
+        {
+            <h1 class="title">log<span>In</span></h1>}
+
+
+        <form id="LoginForm" method="post" action="/user/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                    <input class="form-control" type="email" asp-for="username" id="logEmail" placeholder="Email" style=" padding: 10px;" />
+                    <span asp-validation-for="username" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input class="form-control" type="password" asp-for="password" id="logPassword" placeholder="Password" style=" padding: 10px;" />
+                    <span asp-validation-for="password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 15px;">
+                <button class="btn btn-info form-control" style="background-color: #0a8199" type="submit" onclick="Login()"><i class="glyphicon glyphicon-log-in"></i> Login </button>
+            </div>
+        </form>
+        @if (Context.Request.Query.TryGetValue("ReturnUrl", out queryVal) && queryVal.FirstOrDefault() == "/admin")
+        {
+
+        }
+        else
+        {
+
+            <div class="form-group">
+                <a style="color: steelblue;" asp-action="ForgotPassword">Forgot Password?</a>
+                <a class="signup" style="float: right; cursor: pointer; color: unset; color: steelblue;" onclick="SignUp()" asp-action="UserRegister"> Sign Up </a>
+            </div>
+        }
+
+        <div class="form-group" style="text-align: center;">
+            @if (!string.IsNullOrEmpty(error))
+            {
+                <span class="alert-danger">@error</span>
+            }
+        </div>
+
+        <div>
+            <a href="https://mobizonewebcart.azurewebsites.net/user/login?ReturnUrl=%2Fadmin" style=" position: relative; top: 350px; left: -600px; ">Login as Admin</a>
+        </div>
+    </div>
+</section>
+<script>
+    function SignUp() {
+
+    }
+    function Login() {
+
+    }
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+

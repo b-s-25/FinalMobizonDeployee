@@ -1,0 +1,13 @@
+﻿@model DomainLayer.UserCheckOut
+
+@{
+    ViewData["Title"] = "OrderStatusUpdate";
+}
+
+<h3>Are you sure you want to cancel this order?</h3>
+<div>   
+    <form asp-action="OrderStatusUpdate">
+        <input type="submit" value="Yes" class="btn btn-danger" style="color: #fff; background-color: #007bff; border-color: #007bff;" /> |
+        <a asp-action="MyOrders">No</a>
+    </form>
+</div>

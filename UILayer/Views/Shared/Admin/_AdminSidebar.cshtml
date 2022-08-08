@@ -1,0 +1,38 @@
+﻿@*<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />*@
+<link rel="stylesheet" href="/css/Layout//master.css" />
+
+
+<ul id="nav">
+    <li class="active" class="list"><a href="#">Admin Dashboard</a></li>
+    <li class="list">
+        <a href="#" class="feat-btns">
+            Product
+            <span class="fas fa-caret-down first"></span>
+        </a>
+        <ul class="feat-show">
+            <li class="list"><a asp-action="Create" asp-controller="Product" >Add Product</a></li>
+            <li class="list"><a asp-action="Index" asp-controller="Product">Product List</a></li>
+        </ul>
+    </li>
+    <li class="list">
+        <a href="#" class="serv-btns">
+            Settings
+            <span class="fas fa-caret-down second"></span>
+        </a>
+        <ul class="serv-show">
+            <li class="list"><a asp-controller="Settings" asp-action="Contact">Contact us</a></li>
+            <li class="list"><a asp-controller="Settings" asp-action="About">About</a></li>
+            <li class="list"><a asp-controller="Settings" asp-action="PrivacyAndPolicy">Privacy And Policy</a></li>
+        </ul>
+    </li>
+    <li class="list"><a asp-controller="Admin" asp-action="Userdata">Users</a></li>
+    <li><a asp-controller="OrderDetails" asp-action="OrderList">Orders</a></li>
+
+</ul>
+
+
+
+
+
+

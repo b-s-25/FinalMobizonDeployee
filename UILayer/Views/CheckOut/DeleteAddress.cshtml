@@ -1,0 +1,16 @@
+﻿@model DomainLayer.Address
+
+@{
+    ViewData["Title"] = "DeleteAddress";
+}
+
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    
+    <form asp-action="DeleteAddress">
+        <input type="submit" value="Yes" class="btn btn-danger" style="color: #fff; background-color: #007bff; border-color: #007bff;" /> |
+        <a asp-controller="user" asp-action="MyProfile">No</a>
+    </form>
+</div>

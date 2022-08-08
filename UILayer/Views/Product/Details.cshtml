@@ -1,0 +1,61 @@
+﻿@model DomainLayer.Product.ProductsModel
+
+@{
+    ViewData["Title"] = "Details";
+
+
+    //Layout = "~/Views/Admin/_Layout.cshtml";
+
+}
+
+<h1>Details</h1>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <div>
+            <p style="font-weight:bolder; display:inline;">Name</p> :
+            @Html.DisplayFor(model => model.productName)
+        </div>
+        <br />
+
+
+        <div>
+            <p style="font-weight:bolder; display:inline;">Model</p> :
+            @Html.DisplayFor(model => model.productModel)
+        </div>
+        <br />
+
+        <div>
+            <p style="font-weight:bolder; display:inline;">Price</p> :
+            @Html.DisplayFor(model => model.productPrice)
+        </div>
+        <br />
+
+
+        <div>
+            <p style="font-weight:bolder; display:inline;">Image</p> :
+            <img src="~/Images@*/@Model.image*@" width="150" height="150" asp-append-version="true" />
+        </div>
+        <br />
+
+
+        <div>
+            <p style="font-weight:bolder; display:inline;">Quantity</p> :
+            @Html.DisplayFor(model => model.quantity)
+        </div>
+
+        <div>
+            <p style="font-weight:bolder; display:inline;">Discription</p> :
+            @Html.DisplayFor(model => model.description)
+        </div>
+        <br />
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+

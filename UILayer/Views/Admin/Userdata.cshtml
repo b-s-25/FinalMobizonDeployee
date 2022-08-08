@@ -1,0 +1,61 @@
+﻿@model IEnumerable<DomainLayer.Registration>
+
+@{
+    ViewData["Title"] = "Userdata";
+        Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+<div class="container-fluid mt-3 align-middle" style="margin-left: 239px;">
+    <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <div class="">
+
+
+                <table class="table">
+                    <thead>
+                        <tr>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.firstName)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.email)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.createdOn)
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.firstName)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.email)
+                                </td>
+
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.createdOn)
+                                </td>
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+

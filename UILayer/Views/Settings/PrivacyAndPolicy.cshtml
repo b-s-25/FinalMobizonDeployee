@@ -1,0 +1,47 @@
+﻿
+@model DomainLayer.AdminSettings.PrivacyAndPolicy
+@{
+    ViewData["Title"] = "PrivacyAndPolicy";
+    
+}
+
+<div class="row container-fluid pr-6">
+    <div class="container-fluid mt-3 align-middle">
+        <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <div class="">
+                    <section class=" flex-fill">
+                        <div class=" text-center">
+
+                            <h2>Privacy And Policy</h2>
+                        </div>
+                        <div class="text-center">
+                            <p> @Model.content</p>
+
+                        </div>
+                        @if (((System.Security.Claims.ClaimsIdentity)User.Identity).HasClaim("role", "Admin"))
+                        {
+                            <div class=" text-center">
+                                <div class="form-group">
+                                    <a asp-controller="Settings" asp-action="EditPrivacyAndPolicy" class="btn btn-primary" style="color: #fff; background-color: #337ab7; border-color: #2e6da4; position: relative; top: 50px; left: 140px; ">Edit</a>
+                                </div>
+                            </div>
+                            <a type="button" class="btn btn-primary" style=" padding-left: 1%; padding-right: 1%; margin-left: 700px;" asp-controller="admin" asp-action="index">Back</a>
+                        }
+                        else
+                        { 
+                        <a type="button" class="btn btn-primary" style=" padding-left: 1%; padding-right: 1%; margin-left: 700px;" asp-controller="user" asp-action="index">Back</a>
+                        }
+                        <style>
+                            .About {
+                                margin-left: 300px;
+                            }
+                        </style>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

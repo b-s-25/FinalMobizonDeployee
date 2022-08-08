@@ -1,0 +1,119 @@
+﻿@model IEnumerable<DomainLayer.UserCheckOut>
+
+@{
+    ViewData["Title"] = "MyOrders";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<div style="margin: 10px; font-weight: bold;"> My Orders </div>
+@if (Model != null)
+{
+    @foreach (var data in Model)
+    {
+        <div class="row" style="padding: 14px; border: solid 1px #d7d1d1; margin: 4px;">
+            <div class="col-2">
+                <div class="col-12" style="position: relative; left: -42px;">Order Id : @data.orderId</div>
+                <a asp-controller="product" asp-action="ProductDetails" asp-route-id="@data.productId"><img src="~/images/ProductImages/@data.product.image" style="width: 54px;" /></a>
+
+            </div>
+            <div class="col-3">
+                <div class="col-12" style="font-weight: bold;">@data.product.productName</div>
+                <div class="col-12">@data.product.productModel</div>
+            </div>
+            <div class="col-3">
+                <div class="col-12" style="font-weight: bold;color: green;"> &#8377 @data.price</div>
+            </div>
+            <div class="col-2">
+                <div class="col-12" style="font-weight: bold;" id="orderStatus">@data.status</div>
+            </div>
+            @if ((data.status != DomainLayer.Orders.OrderStatus.cancelled) && (data.status != DomainLayer.Orders.OrderStatus.delivered))
+            {
+                <div class="col-2">
+                    <div class="col-12" style="font-weight: bold;"><a class="btn btn-primary" style="padding: 5px; border-radius: 5px;" onclick="deleteFunction(@data.id);">Cancel Order</a></div>
+                </div>
+            }
+        </div>
+    }
+}
+
+else
+{
+    <img src="~/images/No Images found.jpeg" style="width: 100px;" />
+}
+
+
+<a type="button" class="btn btn-primary" style="background-color: #078ceb; padding-left: 1%; padding-right: 1%; color: white; margin-left: 81%; margin-top: 13%; " asp-action="index">Back</a>&nbsp;
+
+
+<style>
+    .product {
+        margin-left: 8%;
+        font-size: 150%;
+    }
+
+    .price {
+        margin-top: -34px;
+        margin-left: 48%;
+        font-size: 150%;
+    }
+
+    .status {
+        margin-left: 85%;
+        margin-top: -35px;
+        font-size: 150%;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("button").click(function () {
+            $("#orderStatus").val("Cancelled");
+        });
+    });
+</script>
+
+<div class="modal " id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center" style="background-color: #236ca7;">
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+
+                <i class="fas fa-times fa-4x animated rotateIn"></i>
+
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer flex-center" style="background-color: #236ca7;">
+
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
+<script>
+    function deleteFunction(data) {
+        var id = data;
+        $(document).ready(function (e) {
+            $.ajax({
+                url: '/User/OrderStatusUpdate/' + id,
+                type: 'get',
+                success: function (response) {
+                    $("#modalConfirmDelete").find(".modal-body").html(response);
+                    $("#modalConfirmDelete").modal('show');
+                },
+                failure: function (response) {
+                    alert("fail");
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            })
+        });
+    }
+</script>
